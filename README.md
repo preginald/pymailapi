@@ -16,21 +16,25 @@ This project uses a Python virtual environment for managing dependencies. Create
 
 ```bash
 python3 -m venv venv
+```
 
 Activate the virtual environment with:
 
 ```bash
 source venv/bin/activate
+```
 
 Install the required Python packages with:
 
 ```
 pip install -r requirements.txt
+```
 
 In order to configure your environment variables, make a copy of the .env-example file and rename it to .env. Then, update the variables in the .env file to match your settings:
 
 ```bash
 cp .env-example .env
+```
 
 The file should include these variables:
 
