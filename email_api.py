@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -7,7 +8,8 @@ import os
 
 load_dotenv()
 
-app = Flask(__name__)  # Flask application instance
+app = Flask(__name__)
+CORS(app)
 
 @app.route('/send_email', methods=['POST'])
 def send_email():
@@ -27,6 +29,8 @@ def send_email():
     body = data.get('body')
     username = os.getenv('SMTP_USERNAME')
     password = os.getenv('SMTP_PASSWORD')
+    smtp_address = os.getenv('SMTP_ADDRESS')
+    smtp_port = os.getenv('SMTP_PORT')
 
     msg = MIMEMultipart()
     msg['From'] = fromaddr
@@ -35,7 +39,7 @@ def send_email():
     msg.attach(MIMEText(body, 'plain'))
 
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP(smtp_address, int(smtp_port))
         server.starttls()
         server.login(username, password)
         text = msg.as_string()
@@ -46,4 +50,4 @@ def send_email():
         return jsonify({"status": "Failed", "error": str(e)}), 500
     
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5005)
